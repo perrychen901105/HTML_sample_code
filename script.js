@@ -16,25 +16,45 @@
 					 	window.setTimeout(callback, 1000/60);
 					};
 	})();
-	
+
 	var canvas = document.getElementById('sig-canvas');
 	var ctx = canvas.getContext("2d");
+	var positionDiv = document.getElementById('position');
 
+	var path = "http://wonderfl.net/images/icon/e/ec/ec3c/ec3c37ba9594a7b47f1126b2561efd35df2251bfm";
+	var image1 = new DragImage(path, 50, 50);
 	var drawing = false;
 	var mousePos = {x:0, y:0};
 	var lastPos = mousePos;
+	var mouseX = 0,
+    	mouseY = 0;
+	var mousePressed = false;
+	var dragging = false;
+
+	var loop = setInterval(function() {
+
+    	// ctx.fillStyle = "gray";
+   		ctx.fillRect(0, 0, 200, 200);
+
+    	image1.update();
+	}, 30);
 
 	canvas.addEventListener("mousedown", function(e){
 		drawing = true;
 		lastPos = getMousePos(canvas, e);
+		mousePressed = true;
 	}, false);
 
 	canvas.addEventListener("mouseup", function(e){
 		drawing = false;
+		mousePressed = false;
+		dragging = false;
 	}, false);
 
 	canvas.addEventListener("mousemove", function(e){
 		mousePos = getMousePos(canvas, e);
+		mouseX = e.offsetX;
+		mouseY = e.offsetY;
 	}, false);
 
 	// Set up touch events for mobile, etc
@@ -97,24 +117,53 @@
 		};
 	}
 
-	// Draw to the canvas
-	function renderCanvas() {
-		if (drawing) {
-			ctx.moveTo(lastPos.x, lastPos.y);
-			ctx.lineTo(mousePos.x, mousePos.y);
-			ctx.stroke();
-			lastPos = mousePos;
-		}
-	}
 
-	function clearCanvas() {
-		canvas.width = canvas.width;
+	function DragImage(src, x, y) {
+    	var that = this;
+    	var startX = 0,
+       		startY = 0;
+    	var drag = false;
+    	
+   		this.x = x;
+    	this.y = y;
+    	var img = new Image();
+    	img.src = src;
+    	this.update = function() {
+        	if (mousePressed ) {
+            
+                var left = that.x;
+                var right = that.x + img.width;
+                var top = that.y;
+                var bottom = that.y + img.height;
+                if (!drag) {
+                    startX = mouseX - that.x;
+                    startY = mouseY - that.y;
+                }
+                if (mouseX < right && mouseX > left && mouseY < bottom && mouseY > top) {
+                    if (!dragging){
+            			dragging = true;
+                        drag = true;
+                    }
+                    
+                }
+            
+        	} else {
+            	drag = false;
+        	}
+        	if (drag) {
+            	that.x = mouseX - startX;
+            	that.y = mouseY - startY;
+        		positionDiv.innerHTML = "x" + that.x + "y" + that.y;
+        	}
+        	ctx.drawImage(img, that.x, that.y);
+    	}
 	}
 
 	// Allow for animation
-	(function drawLoop () {
-		requestAnimFrame(drawLoop);
-		renderCanvas();
-	})();
+	// (function drawLoop () {
+	// 	requestAnimFrame(drawLoop);
+	// 	// renderCanvas();
+	// 	image1.update();
+	// })();
 
 })();
