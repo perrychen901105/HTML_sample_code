@@ -31,24 +31,43 @@
     	mouseY = 0;
 	var mousePressed = false;
 	var dragging = false;
-   	var x = 0, y = 0;
-
+   	
+   	var image2 = new Image;
+   	image2.src = path;
 
    	// 新增ImageCount Down
-   	
-
-	image1.addEventListener('load', function() {
-		var image1CountDown = setInterval(function(){ myTimer() }, 1000 / 40);
+   	var imageOneAnimation = function() {
+   		var x = 0, y = 0;
+   		var image1CountDown = setInterval(function(){ myTimer() }, 1000 / 40);
 
 		function myTimer() {
-			ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
+			ctx.clearRect(image1.offsetLeft,image1.offsetTop,image1.width,image1.height);
     		ctx.drawImage(image1, x, y);
    			y += 1;
    			if (y > ctx.canvas.height) {
    				y = 0;
    			}
 		}
-	}, false);
+   	}
+
+   	var imageTwoAnimation = function() {
+   		var x = 150, y = 0;
+   		var image2CountDown = setInterval(function(){ myTimer2() }, 1000 / 30);
+
+		function myTimer2() {
+			// ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
+			ctx.clearRect(image2.offsetLeft,image2.offsetTop,image2.width,image2.height);
+    		ctx.drawImage(image2, x, y);
+   			y += 1;
+   			if (y > ctx.canvas.height) {
+   				y = 0;
+   			}
+		}
+   	}
+
+   	setTimeout(imageOneAnimation, 3000);
+   	setTimeout(imageTwoAnimation, 5000);
+
 
 	// var loop = setInterval(function() {
 
