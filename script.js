@@ -22,7 +22,8 @@
 	var positionDiv = document.getElementById('position');
 
 	var path = "http://wonderfl.net/images/icon/e/ec/ec3c/ec3c37ba9594a7b47f1126b2561efd35df2251bfm";
-	var image1 = new DragImage(path, 50, 50);
+	var image1 = new Image;//new DragImage(path, 50, 50);
+	image1.src = path;
 	var drawing = false;
 	var mousePos = {x:0, y:0};
 	var lastPos = mousePos;
@@ -30,14 +31,36 @@
     	mouseY = 0;
 	var mousePressed = false;
 	var dragging = false;
+   	var x = 0, y = 0;
 
-	var loop = setInterval(function() {
 
-    	// ctx.fillStyle = "gray";
-   		ctx.fillRect(0, 0, 200, 200);
+   	// 新增ImageCount Down
+   	
 
-    	image1.update();
-	}, 30);
+	image1.addEventListener('load', function() {
+		var image1CountDown = setInterval(function(){ myTimer() }, 1000 / 40);
+
+		function myTimer() {
+			ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
+    		ctx.drawImage(image1, x, y);
+   			y += 1;
+   			if (y > ctx.canvas.height) {
+   				y = 0;
+   			}
+		}
+	}, false);
+
+	// var loop = setInterval(function() {
+
+ //    	// ctx.fillStyle = "gray";
+ //   		ctx.fillRect(0, 0, 200, 200);
+
+ //   		// return function() {
+   			
+ //   		// }
+
+ //    	// image1.update();
+	// }, 1000 / 40);
 
 	canvas.addEventListener("mousedown", function(e){
 		drawing = true;
