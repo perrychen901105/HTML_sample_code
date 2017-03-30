@@ -21,103 +21,23 @@
 	var ctx = canvas.getContext("2d");
 	var positionDiv = document.getElementById('position');
 
-	var path = "./ec3c37ba9594a7b47f1126b2561efd35df2251bfm.jpeg";
-	var image1 = new Image(50, 50);
-	image1.src = path;
+	var path = "http://wonderfl.net/images/icon/e/ec/ec3c/ec3c37ba9594a7b47f1126b2561efd35df2251bfm";
+	var image1 = new DragImage(path, 50, 50);
+	var drawing = false;
+	var mousePos = {x:0, y:0};
+	var lastPos = mousePos;
+	var mouseX = 0,
+    	mouseY = 0;
+	var mousePressed = false;
+	var dragging = false;
 
-	var moveLeft = true;
-   	
-   	var image2 = new Image(50, 50);
-   	image2.src = path;
+	var loop = setInterval(function() {
 
-   	var image3 = new Image(30, 30);
-   	image3.src = path;
+    	// ctx.fillStyle = "gray";
+   		ctx.fillRect(0, 0, 200, 200);
 
-   	const drawElement = (element, x, y) => {
-    		ctx.drawImage(element, x, y);
-   			y += 5;
-   			if (y > ctx.canvas.height) {
-   				y = 0;
-   			}
-   			return {x, y}
-   	}
-
-   	const drawHorizon = (element, x, y) => {
-    		if (x == 0) {
-    			moveLeft = true;
-    		} else if ((x + element.width) == ctx.canvas.width) {
-    			moveLeft = false;
-    		}
-   			if (moveLeft === true) {
-   				x += 5;
-   			} else {
-   				x -= 5;
-   			}
-   			ctx.drawImage(element, x, y);
-
-   			// if (x > ctx.canvas.width) {
-   			// 	x = 0;
-   			// }
-   			return {x, y}
-   	}
-
-   	var start1 = false
-   	var start2 = false
-
-   	var startX1 = false
-   	// 新增ImageCount Down
-   	var imageOneAnimation = function() {
-   		var x1 = 0, y1 = 0
-   		var x2 = 150, y2 = 0
-   		var x3 = 0, y3 = 420
-   		var image1CountDown = setInterval(function(){ myTimer() }, 1000 / 40);
-
-
-		function myTimer() {
-			let result
-			// ctx.clearRect(image1.offsetLeft,image1.offsetTop,image1.width,image1.height);
-    		ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    		// ctx.clearRect(0,0,image1.width,image1.height);
-    		if (start1) {
-    			result = drawElement(image1, x1, y1)
-    			x1 = result.x
-    			y1 = result.y
-    		}
-    		
-    		
-   			if (start2) {
-   				result = drawElement(image2, x2, y2)
-   				x2 = result.x
-    			y2 = result.y
-   			}
-   			
-   			if (startX1) {
-   				result = drawHorizon(image3, x3, y3)
-   				x3 = result.x
-   				y3 = result.y
-   			}
-		}
-   	}
-
-
-
-   	setTimeout(() => start1 = true, 3000);
-   	setTimeout(() => start2 = true, 5000);
-   	setTimeout(() => startX1 = true, 2000);
-   	setTimeout(imageOneAnimation, 1000);
-
-
-	// var loop = setInterval(function() {
-
- //    	// ctx.fillStyle = "gray";
- //   		ctx.fillRect(0, 0, 200, 200);
-
- //   		// return function() {
-   			
- //   		// }
-
- //    	// image1.update();
-	// }, 1000 / 40);
+    	image1.update();
+	}, 30);
 
 	canvas.addEventListener("mousedown", function(e){
 		drawing = true;
