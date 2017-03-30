@@ -22,8 +22,9 @@
 	var positionDiv = document.getElementById('position');
 
 	var path = "http://wonderfl.net/images/icon/e/ec/ec3c/ec3c37ba9594a7b47f1126b2561efd35df2251bfm";
-	var image1 = new Image;//new DragImage(path, 50, 50);
+	var image1 = new Image(50, 50);
 	image1.src = path;
+
 	var drawing = false;
 	var mousePos = {x:0, y:0};
 	var lastPos = mousePos;
@@ -32,41 +33,53 @@
 	var mousePressed = false;
 	var dragging = false;
    	
-   	var image2 = new Image;
+   	var image2 = new Image(50, 50);
    	image2.src = path;
 
+   	const drawElement = (element, x, y) => {
+    		ctx.drawImage(image1, x, y);
+   			y += 5;
+   			if (y > ctx.canvas.height) {
+   				y = 0;
+   			}
+   			return {x, y}
+   	}
+
+   	var start1 = false
+   	var start2 = false
    	// 新增ImageCount Down
    	var imageOneAnimation = function() {
-   		var x = 0, y = 0;
+   		var x1 = 0, y1 = 0
+   		var x2 = 150, y2 = 0
    		var image1CountDown = setInterval(function(){ myTimer() }, 1000 / 40);
 
+
 		function myTimer() {
-			ctx.clearRect(image1.offsetLeft,image1.offsetTop,image1.width,image1.height);
-    		ctx.drawImage(image1, x, y);
-   			y += 1;
-   			if (y > ctx.canvas.height) {
-   				y = 0;
+			let result
+			// ctx.clearRect(image1.offsetLeft,image1.offsetTop,image1.width,image1.height);
+    		ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    		// ctx.clearRect(0,0,image1.width,image1.height);
+    		if (start1) {
+    			result = drawElement(image1, x1, y1)
+    			x1 = result.x
+    			y1 = result.y
+    		}
+    		
+    		
+   			if (start2) {
+   				result = drawElement(image2, x2, y2)
+   				x2 = result.x
+    			y2 = result.y
    			}
+   			
 		}
    	}
 
-   	var imageTwoAnimation = function() {
-   		var x = 150, y = 0;
-   		var image2CountDown = setInterval(function(){ myTimer2() }, 1000 / 30);
 
-		function myTimer2() {
-			// ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
-			ctx.clearRect(image2.offsetLeft,image2.offsetTop,image2.width,image2.height);
-    		ctx.drawImage(image2, x, y);
-   			y += 1;
-   			if (y > ctx.canvas.height) {
-   				y = 0;
-   			}
-		}
-   	}
 
-   	setTimeout(imageOneAnimation, 3000);
-   	setTimeout(imageTwoAnimation, 5000);
+   	setTimeout(() => start1 = true, 3000);
+   	setTimeout(() => start2 = true, 5000);
+   	setTimeout(imageOneAnimation, 1000);
 
 
 	// var loop = setInterval(function() {
