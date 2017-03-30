@@ -1,0 +1,8 @@
+#mycanvas {
+	border: dashed;
+}
+#sig-canvas {
+	border: 2px dotted #cccccc;
+	border-radius: 5px;
+	cursor: crosshair;
+}
